@@ -4,6 +4,9 @@
     <bytecodeTargetLevel target="1.7">
       <module name="heroApp.app" target="11" />
       <module name="heroApp.buildSrc" target="11" />
+      <module name="heroApp.components" target="11" />
+      <module name="heroApp.hero.ui-heroDetail" target="11" />
+      <module name="heroApp.hero.ui-heroList" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
