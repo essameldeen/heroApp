@@ -46,13 +46,13 @@ android {
 
 dependencies {
 
-//    implementation(project(Modules.core))
-//    implementation(project(Modules.heroDataSource))
-//    implementation(project(Modules.heroDomain))
-//    implementation(project(Modules.heroInteractors))
+    implementation(project(Modules.core))
+    implementation(project(Modules.heroDomain))
+    implementation(project(Modules.heroInteractors))
 
+//    implementation(project(Modules.heroDataSource))
 //    implementation(project(Modules.ui_heroDetail))
-//    implementation(project(Modules.ui_heroList))
+    //implementation(project(Modules.ui_heroList))
 
     implementation(Coil.coil)
 
@@ -79,7 +79,7 @@ dependencies {
 
     implementation(SqlDelight.androidDriver)
 
-   // androidTestImplementation(project(Modules.heroDataSourceTest))
+    // androidTestImplementation(project(Modules.heroDataSourceTest))
     androidTestImplementation(AndroidXTest.runner)
     androidTestImplementation(ComposeTest.uiTestJunit4)
     debugImplementation(ComposeTest.uiTestManifest)
