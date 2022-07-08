@@ -1,50 +1,55 @@
 package com.vodeg.hero_interactors
 
 import com.vodeg.core.DataState
-import com.vodeg.core.Logger
 import com.vodeg.core.ProgressBarState
 import com.vodeg.core.UIComponent
+import com.vodeg.hero_datasource.cache.HeroCache
 import com.vodeg.hero_datasource.network.HeroService
 import com.vodeg.hero_domain.Hero
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+
 class GetHeros(
-    private val heroService: HeroService,
+    private val cache: HeroCache,
+    private val service: HeroService,
+) {
 
-    ) {
-
-     fun execute(): Flow<DataState<List<Hero>>> = flow {
+    fun execute(): Flow<DataState<List<Hero>>> = flow {
         try {
-            emit(DataState.Loading(ProgressBarState.Loading))
-            val heros: List<Hero> = try {
-                heroService.getHeroStats()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                emit(
-                    DataState.Response<List<Hero>>(
-                        uiComponent = UIComponent.Dialog(
-                            title = "Network Error",
-                            description = e.message ?: "UnKnown Error"
-                        )
+            emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
+
+            val heros: List<Hero> = try { // catch network exceptions
+                service.getHeroStats()
+            }catch (e: Exception){
+                e.printStackTrace() // log to crashlytics?
+                emit(DataState.Response<List<Hero>>(
+                    uiComponent = UIComponent.Dialog(
+                        title = "Network Data Error",
+                        description = e.message?: "Unknown error"
                     )
-                )
+                ))
                 listOf()
             }
-            //TODO (caching)
-            emit(DataState.Data(heros))
-        } catch (e: Exception) {
+
+            // cache the network data
+            cache.insert(heros)
+
+            // emit data from cache
+            val cachedHeros = cache.selectAll()
+
+            emit(DataState.Data(cachedHeros))
+        }catch (e: Exception){
             e.printStackTrace()
-            emit(
-                DataState.Response<List<Hero>>(
-                    uiComponent = UIComponent.Dialog(
-                        title = "Error",
-                        description = e.message ?: "UnKnown Error"
-                    )
+            emit(DataState.Response<List<Hero>>(
+                uiComponent = UIComponent.Dialog(
+                    title = "Error",
+                    description = e.message?: "Unknown error"
                 )
-            )
-        } finally {
-            emit(DataState.Loading(ProgressBarState.Idle))
+            ))
+        }
+        finally {
+            emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
         }
     }
 }

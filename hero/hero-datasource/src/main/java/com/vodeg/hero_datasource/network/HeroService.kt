@@ -11,14 +11,13 @@ interface HeroService {
     suspend fun getHeroStats(): List<Hero>
 
     companion object Factory {
-
         fun build(): HeroService {
             return HeroServiceImpl(
                 httpClient = HttpClient(Android) {
                     install(JsonFeature) {
                         serializer = KotlinxSerializer(
-                            kotlinx.serialization.json.Json {
-                                ignoreUnknownKeys = true
+                            kotlinx.serialization.json.Json  {
+                                ignoreUnknownKeys = true // if the server sends extra fields, ignore them
                             }
                         )
                     }

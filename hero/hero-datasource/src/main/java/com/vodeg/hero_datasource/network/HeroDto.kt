@@ -153,7 +153,7 @@ data class HeroDto(
     val eighthWin: Int, // How many times picked eighth and won?
 )
 
-fun HeroDto.toHero(): Hero {
+fun HeroDto.toHero(): Hero{
     return Hero(
         id = id,
         localizedName = localizedName,
@@ -204,4 +204,5 @@ fun HeroDto.toHero(): Hero {
         eighthPick = eighthPick,
     )
 }
+
 

@@ -50,9 +50,10 @@ dependencies {
     implementation(project(Modules.heroDomain))
     implementation(project(Modules.heroInteractors))
 
+    implementation(project(Modules.ui_heroList))
+
 //    implementation(project(Modules.heroDataSource))
 //    implementation(project(Modules.ui_heroDetail))
-    //implementation(project(Modules.ui_heroList))
 
     implementation(Coil.coil)
 
