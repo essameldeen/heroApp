@@ -3,17 +3,15 @@ package com.vodeg.heroapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.ImageLoader
 import com.vodeg.heroapp.navigation.Screen
-import com.vodeg.ui_herodetail.HeroDetails
+import com.vodeg.ui_herodetail.ui.HeroDetails
 import com.vodeg.ui_herodetail.ui.HeroDetailsViewModel
 import com.vodeg.ui_herolist.HeroList
 import com.vodeg.ui_herolist.ui.HeroListViewModel
@@ -37,7 +35,7 @@ class MainActivity : ComponentActivity() {
                 navController = navController, startDestination = Screen.HeroList.route,
                 builder = {
                     addHeroListScreen(navController = navController, imageLoader = imageLoader)
-                    addDetailsScreen()
+                    addDetailsScreen(imageLoader = imageLoader)
                 }
             )
 
@@ -61,6 +59,7 @@ fun NavGraphBuilder.addHeroListScreen(
 }
 
 fun NavGraphBuilder.addDetailsScreen(
+    imageLoader: ImageLoader
 ) {
     composable(
         route = Screen.HeroDetails.route + "/{heroId}",
@@ -68,7 +67,8 @@ fun NavGraphBuilder.addDetailsScreen(
     ) {
         val heroDetailsViewModel: HeroDetailsViewModel = hiltViewModel()
         HeroDetails(
-            state = heroDetailsViewModel.state.value
+            state = heroDetailsViewModel.state.value,
+            imageLoader = imageLoader
         )
     }
 }

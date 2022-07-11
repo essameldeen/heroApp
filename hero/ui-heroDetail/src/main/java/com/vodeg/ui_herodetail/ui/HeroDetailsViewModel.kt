@@ -6,11 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vodeg.core.DataState
-import com.vodeg.core.ProgressBarState
 import com.vodeg.hero_interactors.GetHeroFromCache
-import com.vodeg.ui_herodetail.HeroDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
