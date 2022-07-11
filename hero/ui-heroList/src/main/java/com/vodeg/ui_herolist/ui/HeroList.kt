@@ -15,7 +15,8 @@ import com.vodeg.ui_herolist.ui.HeroListState
 @Composable
 fun HeroList(
     state: HeroListState,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    navigateToDetailsScreen: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -23,7 +24,7 @@ fun HeroList(
         LazyColumn {
             items(state.heroList) { hero ->
                 HeroListItem(hero, imageLoader, { heroId ->
-
+              navigateToDetailsScreen(heroId)
                 })
 
             }
