@@ -2,8 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-kapt")
-//    id("dagger.hilt.android.plugin")
-    kotlin(KotlinPlugins.serialization) version Kotlin.version
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -27,13 +26,14 @@ android {
     buildFeatures {
         compose = true
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
-
+        useIR = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Compose.composeVersion
@@ -85,6 +85,6 @@ dependencies {
     androidTestImplementation(ComposeTest.uiTestJunit4)
     debugImplementation(ComposeTest.uiTestManifest)
     androidTestImplementation(HiltTest.hiltAndroidTesting)
-    kaptAndroidTest(Hilt.compiler)
+    //kaptAndroidTest(Hilt.compiler)
     androidTestImplementation(Junit.junit4)
 }
