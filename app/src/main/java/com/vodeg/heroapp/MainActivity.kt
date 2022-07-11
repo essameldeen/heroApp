@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.ImageLoader
 import com.vodeg.heroapp.navigation.Screen
 import com.vodeg.ui_herodetail.HeroDetails
+import com.vodeg.ui_herodetail.ui.HeroDetailsViewModel
 import com.vodeg.ui_herolist.HeroList
 import com.vodeg.ui_herolist.ui.HeroListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,8 +66,9 @@ fun NavGraphBuilder.addDetailsScreen(
         route = Screen.HeroDetails.route + "/{heroId}",
         arguments = Screen.HeroDetails.arguments
     ) {
+        val heroDetailsViewModel: HeroDetailsViewModel = hiltViewModel()
         HeroDetails(
-            id = it.arguments?.get("heroId") as Int
+            state = heroDetailsViewModel.state.value
         )
     }
 }
