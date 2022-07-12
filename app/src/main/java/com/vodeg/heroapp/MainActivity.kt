@@ -3,6 +3,7 @@ package com.vodeg.heroapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -13,11 +14,12 @@ import coil.ImageLoader
 import com.vodeg.heroapp.navigation.Screen
 import com.vodeg.ui_herodetail.ui.HeroDetails
 import com.vodeg.ui_herodetail.ui.HeroDetailsViewModel
-import com.vodeg.ui_herolist.HeroList
+import com.vodeg.ui_herolist.ui.HeroList
 import com.vodeg.ui_herolist.ui.HeroListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalComposeUiApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -43,6 +45,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalComposeUiApi
 fun NavGraphBuilder.addHeroListScreen(
     navController: NavController,
     imageLoader: ImageLoader
@@ -51,7 +54,9 @@ fun NavGraphBuilder.addHeroListScreen(
         val viewModel: HeroListViewModel = hiltViewModel()
         HeroList(
             state = viewModel.state.value,
-            imageLoader = imageLoader, { heroId ->
+            events = viewModel::onEventTrigger,
+            imageLoader = imageLoader,
+            { heroId ->
                 navController.navigate("${Screen.HeroDetails.route}/$heroId")
             }
         )

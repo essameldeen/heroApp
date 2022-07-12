@@ -2,11 +2,13 @@ package com.vodeg.ui_herolist.ui
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vodeg.core.DataState
 import com.vodeg.core.Logger
 import com.vodeg.core.UIComponent
+import com.vodeg.hero_domain.Hero
 import com.vodeg.hero_interactors.GetHeros
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -27,13 +29,31 @@ class HeroListViewModel
         onEventTrigger(HeroListEvent.GetHeros)
     }
 
-    fun onEventTrigger(event: HeroListEvent){
-        when (event){
-            is HeroListEvent.GetHeros ->{
+    fun onEventTrigger(event: HeroListEvent) {
+        when (event) {
+            is HeroListEvent.GetHeros -> {
                 getHeros()
+            }
+            is HeroListEvent.FilterHero -> {
+                filterHeros()
+            }
+            is HeroListEvent.UpdateHeroName -> {
+                updateHeroName(event.heroName)
             }
         }
     }
+
+    private fun updateHeroName(heroName: String) {
+        state.value = state.value.copy(heroName = heroName)
+    }
+
+    private fun filterHeros() {
+        val filterList: MutableList<Hero> = state.value.heroList.filter {
+            it.localizedName.lowercase().contains(state.value.heroName.lowercase())
+        }.toMutableList()
+        state.value = state.value.copy(filterHeros = filterList)
+    }
+
     private fun getHeros() {
         getHeros.execute().onEach { dataState ->
             when (dataState) {
@@ -52,6 +72,7 @@ class HeroListViewModel
                 }
                 is DataState.Data -> {
                     state.value = state.value.copy(heroList = dataState.data ?: listOf())
+                    filterHeros()
                 }
                 is DataState.Loading -> {
                     state.value = state.value.copy(dataState.progressBarState)
