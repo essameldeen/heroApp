@@ -6,7 +6,8 @@ import com.vodeg.hero_datasource.network.HeroService
 
 data class HeroInteractors(
     val getHeros: GetHeros,
-    val getHeroFromCache: GetHeroFromCache
+    val getHeroFromCache: GetHeroFromCache,
+    val heroFilter: FilterHeros
 ) {
 
     companion object Factory {
@@ -21,7 +22,8 @@ data class HeroInteractors(
 
                 getHeroFromCache = GetHeroFromCache(
                     cache = cache
-                )
+                ),
+                heroFilter = FilterHeros()
             )
         }
 

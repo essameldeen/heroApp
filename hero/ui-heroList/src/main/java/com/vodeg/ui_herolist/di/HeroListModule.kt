@@ -1,6 +1,7 @@
 package com.vodeg.ui_herolist.di
 
 import com.vodeg.core.Logger
+import com.vodeg.hero_interactors.FilterHeros
 import com.vodeg.hero_interactors.GetHeros
 import com.vodeg.hero_interactors.HeroInteractors
 import dagger.Module
@@ -29,5 +30,12 @@ object HeroListModule {
     fun provideGetHeros(interactors: HeroInteractors)
             : GetHeros {
         return interactors.getHeros
+    }
+
+    @Provides
+    @Singleton
+    fun provideFilterHero(interactors: HeroInteractors)
+            : FilterHeros {
+        return interactors.heroFilter
     }
 }

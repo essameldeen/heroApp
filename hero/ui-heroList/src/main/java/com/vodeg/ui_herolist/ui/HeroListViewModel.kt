@@ -9,6 +9,7 @@ import com.vodeg.core.DataState
 import com.vodeg.core.Logger
 import com.vodeg.core.UIComponent
 import com.vodeg.hero_domain.Hero
+import com.vodeg.hero_interactors.FilterHeros
 import com.vodeg.hero_interactors.GetHeros
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -20,7 +21,8 @@ import javax.inject.Named
 class HeroListViewModel
 @Inject constructor(
     private val getHeros: GetHeros,
-    private @Named("heroListLogger") val logger: Logger
+    private @Named("heroListLogger") val logger: Logger,
+    private val filterHeros: FilterHeros
 ) : ViewModel() {
     val state: MutableState<HeroListState> = mutableStateOf(HeroListState())
 
@@ -48,9 +50,12 @@ class HeroListViewModel
     }
 
     private fun filterHeros() {
-        val filterList: MutableList<Hero> = state.value.heroList.filter {
-            it.localizedName.lowercase().contains(state.value.heroName.lowercase())
-        }.toMutableList()
+        val filterList = filterHeros.execute(
+            state.value.heroList,
+            state.value.heroName,
+            state.value.heroFilter,
+            state.value.heroAttribute,
+        )
         state.value = state.value.copy(filterHeros = filterList)
     }
 
