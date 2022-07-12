@@ -14,7 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
+import com.vodeg.components.DefaultScreenUI
 import com.vodeg.core.ProgressBarState
+import com.vodeg.core.UIComponentState
 import com.vodeg.ui_herolist.HeroListItem
 import com.vodeg.ui_herolist.components.HeroListFilter
 import com.vodeg.ui_herolist.components.HeroListToolbar
@@ -28,9 +30,8 @@ fun HeroList(
     imageLoader: ImageLoader,
     navigateToDetailsScreen: (Int) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+
+    DefaultScreenUI(progressBarState = state.progressBarState) {
         Column {
 
             HeroListToolbar(heroName = state.heroName,
@@ -41,7 +42,7 @@ fun HeroList(
                     events(HeroListEvent.FilterHero)
                 },
                 onShowFilterDialog = {
-
+                    events(HeroListEvent.UpdateHeroDialogState(UIComponentState.Show))
                 })
 
 
@@ -54,18 +55,19 @@ fun HeroList(
                 }
             }
         }
-        HeroListFilter(heroFilter =state.heroFilter,
-            onUpdateHeroFilter ={ heroFilter->
-                events(HeroListEvent.UpdateHeroFilter(heroFilter))
-            }, onCloseDialog ={
-
-            })
-
-
-        if (state.progressBarState is ProgressBarState.Loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
+        if (state.filterDialogState is UIComponentState.Show) {
+            HeroListFilter(
+                heroFilter = state.heroFilter,
+                onUpdateHeroFilter = { heroFilter ->
+                    events(HeroListEvent.UpdateHeroFilter(heroFilter))
+                },
+                heroAttribute = state.heroAttribute,
+                onUpdateHeroFilterAttribute = { heroAttribute ->
+                    events(HeroListEvent.UpdateHeroFilterAttribute(heroAttribute))
+                },
+                onCloseDialog = {
+                    events(HeroListEvent.UpdateHeroDialogState(UIComponentState.Hide))
+                })
         }
     }
 

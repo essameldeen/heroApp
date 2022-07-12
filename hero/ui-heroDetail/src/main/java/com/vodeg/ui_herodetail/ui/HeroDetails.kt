@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
 import coil.compose.rememberImagePainter
+import com.vodeg.components.DefaultScreenUI
 import com.vodeg.hero_domain.Hero
 import com.vodeg.hero_domain.maxAttackDmg
 import com.vodeg.hero_domain.minAttackDmg
@@ -31,85 +32,88 @@ fun HeroDetails(
     state: HeroDetailsState,
     imageLoader: ImageLoader,
 ) {
-    state.hero?.let { hero ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)
-        ) {
-            item {
-                Column {
-                    val painter = rememberImagePainter(
-                        hero.img,
-                        imageLoader = imageLoader,
-                        builder = {
-                            placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
-                        }
-                    )
-                    Image(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .defaultMinSize(minHeight = 200.dp),
-                        painter = painter,
-                        contentDescription = hero.localizedName,
-                        contentScale = ContentScale.Crop,
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(12.dp)
-                    ) {
-                        Row(
+
+    DefaultScreenUI(progressBarState = state.progressBarState) {
+        state.hero?.let { hero ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background)
+            ) {
+                item {
+                    Column {
+                        val painter = rememberImagePainter(
+                            hero.img,
+                            imageLoader = imageLoader,
+                            builder = {
+                                placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
+                            }
+                        )
+                        Image(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .defaultMinSize(minHeight = 200.dp),
+                            painter = painter,
+                            contentDescription = hero.localizedName,
+                            contentScale = ContentScale.Crop,
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(12.dp)
                         ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(Alignment.CenterVertically)
+                                        .padding(end = 16.dp),
+                                    text = hero.localizedName,
+
+                                    style = MaterialTheme.typography.h1,
+                                    fontSize = 70.sp
+                                )
+                                val iconPainter = rememberImagePainter(
+                                    hero.icon,
+                                    imageLoader = imageLoader,
+                                    builder = {
+                                        placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
+                                    }
+                                )
+                                Image(
+                                    modifier = Modifier
+                                        .height(30.dp)
+                                        .width(30.dp)
+                                        .align(Alignment.CenterVertically),
+                                    painter = iconPainter,
+                                    contentDescription = hero.localizedName,
+                                    contentScale = ContentScale.Crop,
+                                )
+                            }
                             Text(
                                 modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .padding(end = 16.dp),
-                                text = hero.localizedName,
-
-                                style = MaterialTheme.typography.h1,
-                                fontSize = 70.sp
+                                    .padding(bottom = 4.dp),
+                                text = hero.primaryAttribute.uiValue,
+                                style = MaterialTheme.typography.subtitle1,
                             )
-                            val iconPainter = rememberImagePainter(
-                                hero.icon,
-                                imageLoader = imageLoader,
-                                builder = {
-                                    placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
-                                }
-                            )
-                            Image(
+                            Text(
                                 modifier = Modifier
-                                    .height(30.dp)
-                                    .width(30.dp)
-                                    .align(Alignment.CenterVertically),
-                                painter = iconPainter,
-                                contentDescription = hero.localizedName,
-                                contentScale = ContentScale.Crop,
+                                    .padding(bottom = 12.dp),
+                                text = hero.attackType.uiValue,
+                                style = MaterialTheme.typography.caption,
                             )
+                            HeroBaseStats(
+                                hero = hero,
+                                padding = 10.dp,
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            WinPercentages(hero = hero)
                         }
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 4.dp),
-                            text = hero.primaryAttribute.uiValue,
-                            style = MaterialTheme.typography.subtitle1,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 12.dp),
-                            text = hero.attackType.uiValue,
-                            style = MaterialTheme.typography.caption,
-                        )
-                        HeroBaseStats(
-                            hero = hero,
-                            padding = 10.dp,
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        WinPercentages(hero = hero)
                     }
                 }
             }

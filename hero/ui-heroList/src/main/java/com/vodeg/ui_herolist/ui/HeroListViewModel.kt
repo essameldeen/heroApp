@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.vodeg.core.DataState
 import com.vodeg.core.Logger
 import com.vodeg.core.UIComponent
+import com.vodeg.core.UIComponentState
 import com.vodeg.hero_domain.Hero
+import com.vodeg.hero_domain.HeroAttribute
 import com.vodeg.hero_domain.HeroFilter
 import com.vodeg.hero_interactors.FilterHeros
 import com.vodeg.hero_interactors.GetHeros
@@ -46,7 +48,22 @@ class HeroListViewModel
             is HeroListEvent.UpdateHeroFilter -> {
                 updateHeroFilter(event.heroFilter)
             }
+            is HeroListEvent.UpdateHeroDialogState -> {
+                updateHeroDialogState(event.heroDialogState)
+            }
+            is HeroListEvent.UpdateHeroFilterAttribute -> {
+                updateHeroFilterAttribute(event.heroAttribute)
+            }
         }
+    }
+
+    private fun updateHeroFilterAttribute(heroAttribute: HeroAttribute) {
+        state.value = state.value.copy(heroAttribute = heroAttribute)
+        filterHeros()
+    }
+
+    private fun updateHeroDialogState(heroDialogState: UIComponentState) {
+        state.value = state.value.copy(filterDialogState = heroDialogState)
     }
 
     private fun updateHeroFilter(heroFilter: HeroFilter) {
