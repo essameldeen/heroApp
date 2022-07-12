@@ -9,6 +9,7 @@ import com.vodeg.core.DataState
 import com.vodeg.core.Logger
 import com.vodeg.core.UIComponent
 import com.vodeg.hero_domain.Hero
+import com.vodeg.hero_domain.HeroFilter
 import com.vodeg.hero_interactors.FilterHeros
 import com.vodeg.hero_interactors.GetHeros
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +43,15 @@ class HeroListViewModel
             is HeroListEvent.UpdateHeroName -> {
                 updateHeroName(event.heroName)
             }
+            is HeroListEvent.UpdateHeroFilter -> {
+                updateHeroFilter(event.heroFilter)
+            }
         }
+    }
+
+    private fun updateHeroFilter(heroFilter: HeroFilter) {
+        state.value = state.value.copy(heroFilter = heroFilter)
+        filterHeros()
     }
 
     private fun updateHeroName(heroName: String) {

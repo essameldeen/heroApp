@@ -3,6 +3,7 @@ package com.vodeg.heroapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -20,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @ExperimentalComposeUiApi
+@ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @ExperimentalComposeUiApi
+@ExperimentalAnimationApi
 fun NavGraphBuilder.addHeroListScreen(
     navController: NavController,
     imageLoader: ImageLoader
