@@ -37,7 +37,7 @@ fun HeroListToolbar(
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        color = MaterialTheme.colors.secondary,
+        color = MaterialTheme.colors.background,
         elevation = 12.dp,
     ) {
         Row(
