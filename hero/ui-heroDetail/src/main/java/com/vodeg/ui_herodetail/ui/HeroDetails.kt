@@ -30,10 +30,17 @@ import kotlin.math.round
 @Composable
 fun HeroDetails(
     state: HeroDetailsState,
+    events: (HeroDetailsEvent) -> Unit,
     imageLoader: ImageLoader,
 ) {
 
-    DefaultScreenUI(progressBarState = state.progressBarState) {
+    DefaultScreenUI(
+        queue = state.errorQueue,
+        onRemoveHeadFromQueue = {
+            events(HeroDetailsEvent.RemoveHeadFromQueue)
+        },
+        progressBarState = state.progressBarState
+    ) {
         state.hero?.let { hero ->
             LazyColumn(
                 modifier = Modifier

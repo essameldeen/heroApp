@@ -128,6 +128,7 @@ fun NavGraphBuilder.addDetailsScreen(
         val heroDetailsViewModel: HeroDetailsViewModel = hiltViewModel()
         HeroDetails(
             state = heroDetailsViewModel.state.value,
+            events = heroDetailsViewModel::onTriggerEvent,
             imageLoader = imageLoader
         )
     }

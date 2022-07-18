@@ -31,7 +31,13 @@ fun HeroList(
     navigateToDetailsScreen: (Int) -> Unit
 ) {
 
-    DefaultScreenUI(progressBarState = state.progressBarState) {
+    DefaultScreenUI(
+        queue = state.errorQueue,
+        onRemoveHeadFromQueue = {
+            events(HeroListEvent.RemoveHeadFromQueue)
+        },
+        progressBarState = state.progressBarState
+    ) {
         Column {
 
             HeroListToolbar(heroName = state.heroName,

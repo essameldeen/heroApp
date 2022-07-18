@@ -23,4 +23,6 @@ sealed class HeroListEvent {
     data class UpdateHeroDialogState(
         val heroDialogState: UIComponentState
     ) : HeroListEvent()
+
+    object RemoveHeadFromQueue : HeroListEvent()
 }
